@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+    private Floor _floor;
     private Rigidbody2D _rigid;
     private float _speed = 3f;
     private Animator _anim;
@@ -17,6 +18,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _floor = FindObjectOfType(typeof(Floor)) as Floor;
         _rigid = GetComponent<Rigidbody2D>();
         _anim = GetComponentInChildren<Animator>();
         _playerSprite = GetComponentInChildren<SpriteRenderer>();
@@ -30,7 +32,7 @@ public class Player : MonoBehaviour
 
     void Movement()
     {
-
+        bool downKey = Input.GetKeyDown("down");
         float move = Input.GetAxisRaw("Horizontal");
         bool isRunning;
         if(move == 0)
@@ -53,6 +55,11 @@ public class Player : MonoBehaviour
         _rigid.velocity = new Vector2(move * _speed, _rigid.velocity.y);
 
         _anim.SetBool("isRunning", isRunning);
+
+        if (downKey)
+        {
+            _floor.DisableCollider();
+        }
     }
 
     void Flip(bool FaceRight)
