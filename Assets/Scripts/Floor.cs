@@ -19,4 +19,9 @@ public class Floor : MonoBehaviour
     {
         _tilemap.enabled = false;
     }
+
+    public void EnableCollider()
+    {
+        _tilemap.enabled = true;
+    }
 }

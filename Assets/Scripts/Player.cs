@@ -10,8 +10,9 @@ public class Player : MonoBehaviour
     private Floor _floor;
     private Rigidbody2D _rigid;
     private float _speed = 3f;
+    private float _jumpForce = 8f;
     private Animator _anim;
-
+    private bool _isGrounded = false;
     private SpriteRenderer _playerSprite;
 
 
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour
 
     void Movement()
     {
+        bool upKey = Input.GetKeyDown("up");
         bool downKey = Input.GetKeyDown("down");
         float move = Input.GetAxisRaw("Horizontal");
         bool isRunning;
@@ -60,6 +62,12 @@ public class Player : MonoBehaviour
         {
             _floor.DisableCollider();
         }
+
+        if (upKey && _isGrounded)
+        {
+            StartCoroutine(SetFloorCollision());
+            _rigid.velocity = new Vector2(_rigid.velocity.x, _jumpForce);
+        }
     }
 
     void Flip(bool FaceRight)
@@ -75,4 +83,27 @@ public class Player : MonoBehaviour
             
             }
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("LowerLayer"))
+        {
+            _isGrounded = true;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("LowerLayer"))
+        {
+            _isGrounded = false;
+        }
+    }
+
+    IEnumerator SetFloorCollision()
+    {
+        yield return new WaitForSeconds(1f);
+        _floor.EnableCollider();
+    }
+
 }
