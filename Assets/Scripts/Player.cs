@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     private Floor _floor;
     private Rigidbody2D _rigid;
     private float _speed = 3f;
-    private float _jumpForce = 8f;
+    private float _jumpForce = 7f;
     private Animator _anim;
     private bool _isGrounded = false;
     private SpriteRenderer _playerSprite;
